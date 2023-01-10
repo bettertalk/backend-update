@@ -16,15 +16,14 @@ router.post("/", (req, res) => {
   });
 
   //delete any appointment that has same to and from?
-  
-   Appointment.findOneAndDelete({from: req.body.from, to: req.body.to})
-      .then(appointment => {
-          console.log("Appointment deleted successfully", appointment);
-      })
-      .catch(err => console.log(err));  
 
+  Appointment.findOneAndDelete({ from: req.body.from, to: req.body.to })
+    .then((appointment) => {
+      console.log("Appointment deleted successfully", appointment);
+    })
+    .catch((err) => console.log(err));
 
-   appointment
+  appointment
     .save()
     .then((result) => {
       res.send({
@@ -44,50 +43,46 @@ router.get("/", (req, res) => {
     .catch((err) => console.log(err));
 });
 
-
 // /api/appointments
 router.delete("/", (req, res) => {
-   Appointment.findOneAndDelete({from: req.body.from, to: req.body.to})
-      .then(appointment => {
+  Appointment.findOneAndDelete({ from: req.body.from, to: req.body.to })
+    .then((appointment) => {
       res.send({
         message: "Appointment deleted successfully",
-        data: result,
+        // data: result,
       });
-      })
-      .catch(err => console.log(err)); 
+    })
+    .catch((err) => console.log(err));
 });
 
-
 // /api/appointments/upcoming/id
-router.get('/upcoming/:id', (req, res) => {
+router.get("/upcoming/:id", (req, res) => {
   const userId = req.params.id;
 
-  Appointment.find({from: userId})
-      .then(appointment => {
-          res.send(appointment);
-      })
-      .catch(err => console.log(err))
+  Appointment.find({ from: userId })
+    .then((appointment) => {
+      res.send(appointment);
+    })
+    .catch((err) => console.log(err));
 });
 
 // /api/appointments/requests/id
-router.get('/requests/:id', (req, res) => {
+router.get("/requests/:id", (req, res) => {
   const docId = req.params.id;
 
-  Appointment.find({to: docId})
-      .then(appointment => {
-          if(appointment) {
-            res.send(appointment);
-          }
-          else {
-            console.log("No appointment for doctor Id ", docId, " found");
-             res.send({
-             message: "No appointment for doctor Id found",
-             data: []
-           });
-          }
-      })
-      .catch(err => console.log(err))
+  Appointment.find({ to: docId })
+    .then((appointment) => {
+      if (appointment) {
+        res.send(appointment);
+      } else {
+        console.log("No appointment for doctor Id ", docId, " found");
+        res.send({
+          message: "No appointment for doctor Id found",
+          data: [],
+        });
+      }
+    })
+    .catch((err) => console.log(err));
 });
-
 
 module.exports = router;
