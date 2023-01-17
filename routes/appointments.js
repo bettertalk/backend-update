@@ -22,7 +22,7 @@ router.post("/", (req, res) => {
       console.log("Appointment deleted successfully", appointment);
     })
     .catch((err) => console.log(err));
-
+  return null;
   appointment
     .save()
     .then((result) => {
@@ -36,7 +36,7 @@ router.post("/", (req, res) => {
 
 // /api/appointments
 router.get("/", (req, res) => {
-  Appointment.find()
+  Appointment.find({ ...req.query })
     .then((appointments) => {
       res.send(appointments);
     })
@@ -45,11 +45,14 @@ router.get("/", (req, res) => {
 
 // /api/appointments
 router.delete("/", (req, res) => {
-  Appointment.findOneAndDelete({ from: req.body.from, to: req.body.to })
+  Appointment.findOneAndDelete(
+    { from: req.body.from, to: req.body.to },
+    { new: true }
+  )
     .then((appointment) => {
       res.send({
         message: "Appointment deleted successfully",
-        // data: result,
+        data: appointment,
       });
     })
     .catch((err) => console.log(err));
@@ -64,6 +67,24 @@ router.get("/upcoming/:id", (req, res) => {
       res.send(appointment);
     })
     .catch((err) => console.log(err));
+});
+// /api/appointments/upcoming/id
+router.put("/update/:id", async (req, res) => {
+  try {
+    const id = req.params.id;
+
+    const appo = await Appointment.findByIdAndUpdate(
+      id,
+      {
+        acceptStatus: true,
+        startStatus: true,
+      },
+      { new: true }
+    );
+    res.send(appo);
+  } catch (e) {
+    res.status(400).send({ success: false, message: e.message });
+  }
 });
 
 // /api/appointments/requests/id
