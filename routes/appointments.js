@@ -5,18 +5,6 @@ const Appointment = require("../models/Appointment");
 const router = express.Router();
 
 router.post("/", (req, res) => {
-  const appointment = new Appointment({
-    from: req.body.from,
-    to: req.body.to,
-    fromName: req.body.fromName,
-    time: req.body.time,
-    acceptStatus: req.body.acceptStatus,
-    startStatus: req.body.startStatus,
-    appointmentType: req.body.appointmentType,
-  });
-
-  //delete any appointment that has same to and from?
-
   Appointment.updateMany(
     { from: req.body.from, to: req.body.to },
     { acceptStatus: true, startStatus: true },
@@ -26,6 +14,18 @@ router.post("/", (req, res) => {
       console.log("Appointment deleted successfully", appointment);
     })
     .catch((err) => console.log(err));
+  const appointment = new Appointment({
+    from: req.body.from,
+    to: req.body.to,
+    fromName: req.body.fromName,
+    time: req.body.time,
+    acceptStatus: false,
+    startStatus: false,
+    appointmentType: req.body.appointmentType,
+  });
+
+  //delete any appointment that has same to and from?
+
   // return null;
   appointment
     .save()
