@@ -17,7 +17,7 @@ router.post("/", (req, res) => {
 
   //delete any appointment that has same to and from?
 
-  Appointment.findOneAndUpdate(
+  Appointment.updateMany(
     { from: req.body.from, to: req.body.to },
     { acceptStatus: true, startStatus: true },
     { new: true }
