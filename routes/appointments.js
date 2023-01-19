@@ -12,28 +12,28 @@ router.post("/", (req, res) => {
   )
     .then((appointment) => {
       console.log("Appointment deleted successfullyd ", appointment);
-    })
-    .catch((err) => console.log(err));
-  const appointment = new Appointment({
-    from: req.body.from,
-    to: req.body.to,
-    fromName: req.body.fromName,
-    time: req.body.time,
-    acceptStatus: false,
-    startStatus: false,
-    appointmentType: req.body.appointmentType,
-  });
-
-  //delete any appointment that has same to and from?
-
-  // return null;
-  appointment
-    .save()
-    .then((result) => {
-      res.send({
-        message: "Appointment created successfully",
-        data: result,
+      const appointment = new Appointment({
+        from: req.body.from,
+        to: req.body.to,
+        fromName: req.body.fromName,
+        time: req.body.time,
+        acceptStatus: false,
+        startStatus: false,
+        appointmentType: req.body.appointmentType,
       });
+
+      //delete any appointment that has same to and from?
+
+      // return null;
+      appointment
+        .save()
+        .then((result) => {
+          res.send({
+            message: "Appointment created successfully",
+            data: result,
+          });
+        })
+        .catch((err) => console.log(err));
     })
     .catch((err) => console.log(err));
 });
