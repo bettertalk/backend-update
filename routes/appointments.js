@@ -11,7 +11,7 @@ router.post("/", (req, res) => {
     { new: true }
   )
     .then((appointment) => {
-      console.log("Appointment deleted successfully", appointment);
+      console.log("Appointment deleted successfully ", appointment);
     })
     .catch((err) => console.log(err));
   const appointment = new Appointment({
