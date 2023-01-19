@@ -17,12 +17,15 @@ router.post("/", (req, res) => {
 
   //delete any appointment that has same to and from?
 
-  Appointment.findOneAndDelete({ from: req.body.from, to: req.body.to })
+  Appointment.findAndUpdate(
+    { from: req.body.from, to: req.body.to },
+    { acceptStatus: true, startStatus: true }
+  )
     .then((appointment) => {
       console.log("Appointment deleted successfully", appointment);
     })
     .catch((err) => console.log(err));
-  return null;
+  // return null;
   appointment
     .save()
     .then((result) => {
