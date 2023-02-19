@@ -10,8 +10,8 @@ router.post("/", (req, res) => {
     { acceptStatus: true, startStatus: true },
     { new: true }
   )
-    .then((res) => {
-      console.log("Appointment deleted successfullyd ", res);
+    .then((result) => {
+      console.log("Appointment deleted successfullyd ", result);
       const appointment = new Appointment({
         from: req.body.from,
         to: req.body.to,
