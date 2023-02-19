@@ -76,16 +76,23 @@ router.get("/upcoming/:id", (req, res) => {
 router.put("/update/:id", async (req, res) => {
   try {
     const id = req.params.id;
-
+    if (req.body?.acceptStatus == undefined)
+      return res
+        .status(400)
+        .send({ success: false, message: "acceptStatus is required" });
+    if (req.body?.startStatus == undefined)
+      return res
+        .status(400)
+        .send({ success: false, message: "startStatus is required" });
     const appo = await Appointment.findByIdAndUpdate(
       id,
       {
-        acceptStatus: true,
-        startStatus: true,
+        acceptStatus: req.body.acceptStatus,
+        startStatus: req.body.startStatus,
       },
       { new: true }
     );
-    res.send(appo);
+    res.send({ success: true, appo });
   } catch (e) {
     res.status(400).send({ success: false, message: e.message });
   }
