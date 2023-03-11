@@ -91,6 +91,9 @@ router.put("/update/:id", async (req, res) => {
     if (req.body.isDeleted) {
       updateData = { ...updateData, isDeleted: req.body.isDeleted };
     }
+    if (req.body.isCanceled) {
+      updateData = { ...updateData, isCanceled: req.body.isCanceled };
+    }
     const appo = await Appointment.findByIdAndUpdate(id, updateData, {
       new: true,
     });
