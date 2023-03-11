@@ -84,14 +84,16 @@ router.put("/update/:id", async (req, res) => {
       return res
         .status(400)
         .send({ success: false, message: "startStatus is required" });
-    const appo = await Appointment.findByIdAndUpdate(
-      id,
-      {
-        acceptStatus: req.body.acceptStatus,
-        startStatus: req.body.startStatus,
-      },
-      { new: true }
-    );
+    let updateData = {
+      acceptStatus: req.body.acceptStatus,
+      startStatus: req.body.startStatus,
+    };
+    if (req.body.isDeleted) {
+      updateData = { ...updateData, isDeleted: req.body.isDeleted };
+    }
+    const appo = await Appointment.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
     res.send({ success: true, appo });
   } catch (e) {
     res.status(400).send({ success: false, message: e.message });

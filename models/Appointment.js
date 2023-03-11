@@ -7,6 +7,7 @@ const AppointmentSchema = new mongoose.Schema({
   time: { type: String, required: true },
   acceptStatus: { type: Boolean, default: false },
   startStatus: { type: Boolean, default: false },
+  isDeleted: { type: Boolean, default: false },
   appointmentType: { type: String, required: true },
 });
 
