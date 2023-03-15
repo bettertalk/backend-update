@@ -47,7 +47,7 @@ router.get("/", (req, res) => {
     .catch((err) => console.log(err));
 });
 router.get("/admin", (req, res) => {
-  Appointment.find({ ...req.query })
+  Appointment.find({ ...req.query }).sort({ _id: -1 })
     .then((data) => {
       if (data) {
         const respose = {
