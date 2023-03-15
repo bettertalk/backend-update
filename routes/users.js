@@ -47,6 +47,22 @@ router.get("/", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+router.get("/admin", (req, res) => {
+  User.find()
+    .then((data) => {
+      if (data) {
+        const respose = {
+          message: "Data Fetched successfully",
+          count: data.length,
+          data: data,
+        };
+        res.status(200).json(respose);
+      } else {
+        res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((err) => console.log(err));
+});
 
 // /api/users/id
 router.get("/:id", (req, res) => {
@@ -313,4 +329,82 @@ router.put("/available/:id", (req, res) => {
     }
   );
 });
+
+router.post("/admin/uid/", (req, res, next) => {
+  const id = req.body.id;
+  User
+    .find({ _id: req.body.id })
+    .select()
+    .exec()
+    .then((data) => {
+      // console.log("Data From Database"+data);
+      if (data) {
+        res.status(200).json({ data });
+      } else {
+        res.status(404).json({ message: "Item Not Found" });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json(error);
+    });
+});
+
+router.post(
+  "/admin/update",
+  upload.single('Image'),
+  async (req, res, next) => {
+    try {
+      var base64String = base64Encode(req.file.path);
+      const uploadString = "data:image/jpeg;base64," + base64String;
+      const uploadResponse = await cloudinary.uploader.upload(uploadString, {
+        overwrite: true,
+        invalidate: true,
+        crop: "fill",
+      });
+   var url =  uploadResponse.secure_url;
+   console.log(url);
+    } catch (e) {
+      console.log(e);
+    }
+    User.find({_id: req.body.uid })
+      .exec()
+      .then((user) => {
+        if (user.length < 1) {
+          return res.status(409).json({
+            message: "User Not Exist",
+          });
+        } else {
+          User.update(
+            { _id: req.body.uid},
+            {
+              name: req.body.name,
+              mobile: req.body.mobile,
+              qualification: req.body.qualification,
+              profile: url,
+              age: req.body.age,
+              gender: req.body.gender,
+              location: req.body.location,
+              sessions: req.body.sessions,
+            }
+          )
+            .exec()
+            .then((result) => {
+              console.log(result);
+              res.status(201).json({
+                message: "User Updated",
+                user: result,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json({
+                error: err,
+              });
+            });
+        }
+      });
+  }
+);
+
 module.exports = router;

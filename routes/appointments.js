@@ -46,6 +46,36 @@ router.get("/", (req, res) => {
     })
     .catch((err) => console.log(err));
 });
+router.get("/admin", (req, res) => {
+  Appointment.find({ ...req.query })
+    .then((data) => {
+      if (data) {
+        const respose = {
+          message: "Data Fetched successfully",
+          count: data.length,
+          data: data,
+        };
+        res.status(200).json(respose);
+      } else {
+        res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((err) => console.log(err));
+});
+router.get("/admin/count", (req, res) => {
+  Appointment.find({ ...req.query })
+    .then((data) => {
+      if (data) {
+        const respose = {
+          count: data.length,
+        };
+        res.status(200).json(respose);
+      } else {
+        res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((err) => console.log(err));
+});
 
 // /api/appointments
 router.delete("/", (req, res) => {
@@ -120,6 +150,13 @@ router.get("/requests/:id", (req, res) => {
       }
     })
     .catch((err) => console.log(err));
+});
+router.post('/delete/admin', (req,res,next)=>{
+  const id = req.body.id;
+  Appointment.remove({_id:id})
+  .exec()
+  .then(data => res.status(200).json({message: "Appointment deleted"}))
+  .catch(err => res.status(500).json(err));
 });
 
 module.exports = router;
