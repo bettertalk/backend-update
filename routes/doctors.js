@@ -28,6 +28,7 @@ router.post("/", (req, res) => {
     description: req.body.description,
     age: req.body.age,
     gender: req.body.gender,
+    mobile: req.body.mobile,
   });
 
   doctor

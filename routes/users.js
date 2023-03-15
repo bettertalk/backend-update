@@ -24,7 +24,8 @@ router.post("/", (req, res) => {
     freeSession: req.body.freeSession,
     upcomingApp: req.body.upcomingApp,
     minutes: req.body.minutes,
-    sessions: req.body.sessions
+    sessions: req.body.sessions,
+    mobile: req.body.mobile,
   });
 
   user
