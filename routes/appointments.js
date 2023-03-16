@@ -137,7 +137,6 @@ router.put("/update/:id", async (req, res) => {
 // /api/appointments/requests/id
 router.get("/requests/:id", (req, res) => {
   const docId = req.params.id;
-
   Appointment.find({ to: docId, isCanceled: false, isDeleted: false })
     .then((appointment) => {
       if (appointment) {
