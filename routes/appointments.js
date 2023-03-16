@@ -12,11 +12,12 @@ router.post("/", (req, res) => {
   )
     .then((result) => {
       console.log("Appointment deleted successfullyd ", result);
+      const dateIST = new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
       const appointment = new Appointment({
         from: req.body.from,
         to: req.body.to,
         fromName: req.body.fromName,
-        time: req.body.time,
+        time: dateIST,
         acceptStatus: false,
         startStatus: false,
         appointmentType: req.body.appointmentType,
