@@ -7,6 +7,7 @@ const razorpay = require("./routes/razorpay");
 const purchases = require("./routes/purchases");
 const forums = require("./routes/forums");
 const notifications = require("./routes/notifications");
+const Settings = require("./routes/Settings");
 var cors = require("cors");
 
 const app = express();
@@ -37,6 +38,7 @@ app.use("/api/razorpay", razorpay);
 app.use("/api/purchases", purchases);
 app.use("/api/forums", forums);
 app.use("/api/notifications", notifications);
+app.use("/api/settings", Settings);
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;

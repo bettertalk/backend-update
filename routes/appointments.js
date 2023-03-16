@@ -5,13 +5,13 @@ const Appointment = require("../models/Appointment");
 const router = express.Router();
 
 router.post("/", (req, res) => {
-  Appointment.updateMany(
-    { from: req.body.from, to: req.body.to },
-    { acceptStatus: true, startStatus: true },
-    { new: true }
-  )
-    .then((result) => {
-      console.log("Appointment deleted successfullyd ", result);
+  // Appointment.updateMany(
+  //   { from: req.body.from, to: req.body.to },
+  //   { acceptStatus: true, startStatus: true },
+  //   { new: true }
+  // )
+  //   .then((result) => {
+      // console.log("Appointment deleted successfullyd ", result);
       const dateIST = new Date().toLocaleString("en-US", {timeZone: "Asia/Kolkata"});
       const appointment = new Appointment({
         from: req.body.from,
@@ -35,8 +35,8 @@ router.post("/", (req, res) => {
           });
         })
         .catch((err) => console.log(err));
-    })
-    .catch((err) => console.log(err));
+    // })
+    // .catch((err) => console.log(err));
 });
 
 // /api/appointments
@@ -158,6 +158,61 @@ router.post('/delete/admin', (req,res,next)=>{
   .exec()
   .then(data => res.status(200).json({message: "Appointment deleted"}))
   .catch(err => res.status(500).json(err));
+});
+router.post(
+  "/admin/update",
+   (req, res, next) => {  
+    Appointment.find({_id: req.body.uid })
+      .exec()
+      .then((user) => {
+        if (user.length < 1) {
+          return res.status(409).json({
+            message: "User Not Exist",
+          });
+        } else {
+          Appointment.update(
+            { _id: req.body.uid},
+            {
+              comment: req.body.comment,
+            }
+          )
+            .exec()
+            .then((result) => {
+              console.log(result);
+              res.status(201).json({
+                message: "Comment Added",
+                user: result,
+              });
+            })
+            .catch((err) => {
+              console.log(err);
+              res.status(500).json({
+                error: err,
+            });
+         });
+        }
+      });
+  }
+);
+
+router.post("/admin/uid/", (req, res, next) => {
+  const id = req.body.id;
+  Appointment
+    .find({ _id: req.body.id })
+    .select()
+    .exec()
+    .then((data) => {
+      // console.log("Data From Database"+data);
+      if (data) {
+        res.status(200).json({ data });
+      } else {
+        res.status(404).json({ message: "Item Not Found" });
+      }
+    })
+    .catch((error) => {
+      console.log(error);
+      res.status(500).json(error);
+    });
 });
 
 module.exports = router;

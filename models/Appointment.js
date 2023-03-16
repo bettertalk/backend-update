@@ -10,6 +10,7 @@ const AppointmentSchema = new mongoose.Schema({
   isDeleted: { type: Boolean, default: false },
   isCanceled: { type: Boolean, default: false },
   appointmentType: { type: String, required: true },
+  comment: { type: String },
 });
 
 module.exports = mongoose.model("Appointment", AppointmentSchema);
