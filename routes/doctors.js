@@ -515,5 +515,12 @@ router.post(
       });
   }
 );
+router.post('/delete/admin', (req,res,next)=>{
+  const id = req.body.id;
+  Doctor.remove({_id:id})
+  .exec()
+  .then(data => res.status(200).json({message: "Doctor deleted"}))
+  .catch(err => res.status(500).json(err));
+});
 
 module.exports = router;

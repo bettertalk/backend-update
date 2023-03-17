@@ -407,4 +407,67 @@ router.post(
   }
 );
 
+// router.post(
+//   "/admin/update/image",
+//   upload.single('Image'),
+//   async (req, res, next) => {
+//     try {
+//       var base64String = base64Encode(req.file.path);
+//       const uploadString = "data:image/jpeg;base64," + base64String;
+//       const uploadResponse = await cloudinary.uploader.upload(uploadString, {
+//         overwrite: true,
+//         invalidate: true,
+//         crop: "fill",
+//       });
+//    var url =  uploadResponse.secure_url;
+//    console.log(url);
+//     } catch (e) {
+//       console.log(e);
+//     }
+//     User.find({_id: req.body.uid })
+//       .exec()
+//       .then((user) => {
+//         if (user.length < 1) {
+//           return res.status(409).json({
+//             message: "User Not Exist",
+//           });
+//         } else {
+//           User.update(
+//             { _id: req.body.uid},
+//             {
+//               name: req.body.name,
+//               mobile: req.body.mobile,
+//               qualification: req.body.qualification,
+//               profile: url,
+//               age: req.body.age,
+//               gender: req.body.gender,
+//               location: req.body.location,
+//               sessions: req.body.sessions,
+//             }
+//           )
+//             .exec()
+//             .then((result) => {
+//               console.log(result);
+//               res.status(201).json({
+//                 message: "User Updated",
+//                 user: result,
+//               });
+//             })
+//             .catch((err) => {
+//               console.log(err);
+//               res.status(500).json({
+//                 error: err,
+//               });
+//             });
+//         }
+//       });
+//   }
+// );
+router.post('/delete/admin', (req,res,next)=>{
+  const id = req.body.id;
+  User.remove({_id:id})
+  .exec()
+  .then(data => res.status(200).json({message: "User deleted"}))
+  .catch(err => res.status(500).json(err));
+});
 module.exports = router;
