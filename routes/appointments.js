@@ -157,7 +157,7 @@ router.post('/delete/admin', (req,res,next)=>{
   .exec()
   .then(data => res.status(200).json({message: "Appointment deleted"}))
   .catch(err => res.status(500).json(err));
-});
+}); 
 router.post(
   "/admin/update",
    (req, res, next) => {  
