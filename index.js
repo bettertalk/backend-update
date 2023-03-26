@@ -8,6 +8,7 @@ const purchases = require("./routes/purchases");
 const forums = require("./routes/forums");
 const notifications = require("./routes/notifications");
 const Settings = require("./routes/Settings");
+const Verify = require("./routes/verify");
 var cors = require("cors");
 
 const app = express();
@@ -39,6 +40,7 @@ app.use("/api/purchases", purchases);
 app.use("/api/forums", forums);
 app.use("/api/notifications", notifications);
 app.use("/api/settings", Settings);
+app.use("/api/verify", Verify);
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
