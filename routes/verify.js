@@ -1,7 +1,8 @@
 const express = require("express");
 const User = require("../models/Verify");
+require('dotenv').config();
 const accountSid = 'AC504b2fd24e7b37a6770e4472e08aa814';
-const authToken = '16a39b9816c776883f8bdc43059b151b';
+const authToken = process.env.MESSAGE;
 const client = require('twilio')(accountSid, authToken);
 const router = express.Router();
 
