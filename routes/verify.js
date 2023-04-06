@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/Verify");
 const accountSid = 'AC504b2fd24e7b37a6770e4472e08aa814';
-const authToken = 'bff959a2f461c429d3cf00d355a08810';
+const authToken = '16a39b9816c776883f8bdc43059b151b';
 const client = require('twilio')(accountSid, authToken);
 const router = express.Router();
 
