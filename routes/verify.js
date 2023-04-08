@@ -1,7 +1,7 @@
 const express = require("express");
 const User = require("../models/Verify");
 require('dotenv').config();
-const accountSid = 'AC504b2fd24e7b37a6770e4472e08aa814';
+const accountSid = 'AC1a1ffcca0f97f724fb2b622dbea7076b';
 const authToken = process.env.MESSAGE;
 const client = require('twilio')(accountSid, authToken);
 const router = express.Router();
@@ -11,7 +11,7 @@ router.post("/sendotp", async (req, res) => {
   try {
     const message = await client.messages.create({
       body: 'Hello from BetterTalk !!! Your Mental Health partner. Your Verification Code is '+randomNumber,
-      from: '+14406933450',
+      from: '+15075744991',
       to: '+91'+req.body.mobile
     });
     console.log(message.sid);
