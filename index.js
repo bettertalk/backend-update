@@ -7,6 +7,7 @@ const razorpay = require("./routes/razorpay");
 const purchases = require("./routes/purchases");
 const forums = require("./routes/forums");
 const notifications = require("./routes/notifications");
+const EaseBuzz = require("./routes/easepay");
 var cors = require("cors");
 
 const app = express();
@@ -34,9 +35,11 @@ app.use("/api/doctors", doctors);
 app.use("/api/users", users);
 app.use("/api/appointments", appointments);
 app.use("/api/razorpay", razorpay);
+app.use("/api/easepay", EaseBuzz);
 app.use("/api/purchases", purchases);
 app.use("/api/forums", forums);
 app.use("/api/notifications", notifications);
+// app.use("/api/", EaseBuzz);
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;
