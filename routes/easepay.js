@@ -3,26 +3,33 @@ const express = require("express");
 const router = express.Router();
 const fetch = require("node-fetch");
 var crypto = require("crypto");
+const uuid = require("uuid");
 router.post("/", async (req, res, next) => {
   try {
     const encodedParams = new URLSearchParams();
+    const uniqueRandomID = uuid.v4();
+    let amount = req.body.amount;
+    let name = req.body.name;
+    let userId = req.body.userId;
+    let mobile = req.body.mobile;
+    let email = req.body.email ? req.body.email : "bettertalk@gmail.com";
     let hash1 =
       "key|txnid|amount|productinfo|firstname|email|udf1|udf2|udf3|udf4|udf5|udf6|udf7|udf8|udf9|udf10|salt";
-    let hash2 = `FBVECCAUGO|bettertalk002|2.1|bettertalk|bettertalk|lakheraakshay@gmail.com|first payment||||||||||JQE72SQW2X`;
+    let hash2 = `FBVECCAUGO|${uniqueRandomID}|${amount}|Session|${name}|${email}|${userId}||||||||||JQE72SQW2X`;
 
     const hash = crypto.createHash("sha512").update(hash2).digest("hex");
     encodedParams.set("key", "FBVECCAUGO");
-    encodedParams.set("txnid", "bettertalk002");
-    encodedParams.set("amount", "2.1");
-    encodedParams.set("productinfo", "bettertalk");
-    encodedParams.set("firstname", "bettertalk");
-    encodedParams.set("phone", "7415206625");
-    encodedParams.set("email", "lakheraakshay@gmail.com");
+    encodedParams.set("txnid", uniqueRandomID);
+    encodedParams.set("amount", amount);
+    encodedParams.set("productinfo", "Session");
+    encodedParams.set("firstname", name);
+    encodedParams.set("phone", mobile);
+    encodedParams.set("email", email);
     encodedParams.set("surl", "https://www.google.com");
     encodedParams.set("furl", "https://www.google.com");
     encodedParams.set("hash", hash);
-    encodedParams.set("udf1", "first payment ");
-    encodedParams.set("state", "MP");
+    encodedParams.set("udf1", userId);
+    encodedParams.set("state", " ");
     const url = "https://pay.easebuzz.in/payment/initiateLink";
     const options = {
       method: "POST",
