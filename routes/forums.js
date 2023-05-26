@@ -78,5 +78,28 @@ router.put("/likes/:id", (req, res) => {
     }
   );
 });
+router.get("/admin", (req, res) => {
+  Forum.find({ ...req.query }).sort({ _id: -1 })
+    .then((data) => {
+      if (data) {
+        const respose = {
+          message: "Data Fetched successfully",
+          count: data.length,
+          data: data,
+        };
+        res.status(200).json(respose);
+      } else {
+        res.status(404).json({ message: "Users not found" });
+      }
+    })
+    .catch((err) => console.log(err));
+});
+router.post('/delete/admin', (req,res,next)=>{
+  const id = req.body.id;
+  Forum.remove({_id:id})
+  .exec()
+  .then(data => res.status(200).json({message: "Forums deleted"}))
+  .catch(err => res.status(500).json(err));
+});
 
 module.exports = router;

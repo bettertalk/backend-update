@@ -25,7 +25,11 @@
     "multer": "^1.4.5-lts.1",
     "razorpay": "^2.8.1",
     "sse-express": "^1.0.2",
+<<<<<<< HEAD
     "uuid": "^9.0.0"
+=======
+    "twilio": "^4.9.0"
+>>>>>>> 1cacefaeeea51b4b8139019a23b7fce3a04b55cb
   },
   "devDependencies": {
     "nodemon": "^2.0.16"

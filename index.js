@@ -7,7 +7,12 @@ const razorpay = require("./routes/razorpay");
 const purchases = require("./routes/purchases");
 const forums = require("./routes/forums");
 const notifications = require("./routes/notifications");
+<<<<<<< HEAD
 const EaseBuzz = require("./routes/easepay");
+=======
+const Settings = require("./routes/Settings");
+const Verify = require("./routes/verify");
+>>>>>>> 1cacefaeeea51b4b8139019a23b7fce3a04b55cb
 var cors = require("cors");
 
 const app = express();
@@ -39,7 +44,12 @@ app.use("/api/easepay", EaseBuzz);
 app.use("/api/purchases", purchases);
 app.use("/api/forums", forums);
 app.use("/api/notifications", notifications);
+<<<<<<< HEAD
 // app.use("/api/", EaseBuzz);
+=======
+app.use("/api/settings", Settings);
+app.use("/api/verify", Verify);
+>>>>>>> 1cacefaeeea51b4b8139019a23b7fce3a04b55cb
 require("dotenv").config();
 
 const port = process.env.PORT || 5000;

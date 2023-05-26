@@ -17,6 +17,7 @@ const DoctorSchema = new mongoose.Schema({
   description: {type: String},
   age: {type: String},
   gender: {type: String},
+  mobile: {type: String},
 });
 
 module.exports = mongoose.model('Doctor', DoctorSchema);

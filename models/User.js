@@ -13,6 +13,7 @@ const UserSchema = new mongoose.Schema({
   upcomingApp: [],
   minutes:  {type: String },
   sessions:  {type: String },
+  mobile:  {type: String },
 });
 
 module.exports = mongoose.model('User', UserSchema);
