@@ -1,4 +1,5 @@
 const express = require("express");
+var fs = require("fs");
 const mongoose = require("mongoose");
 const doctors = require("./routes/doctors");
 const appointments = require("./routes/appointments");
@@ -33,6 +34,13 @@ app.get("/", (req, res) => {
   res.send("Welcome to the Better Talk App Backend API");
 });
 app.use(cors());
+app.use("/static", (req, res) => {
+  fs.readFile("index.html", function (err, data) {
+    res.writeHead(200, { "Content-Type": "text/html" });
+    res.write(data);
+    res.end();
+  });
+});
 app.use("/api/doctors", doctors);
 app.use("/api/users", users);
 app.use("/api/appointments", appointments);

@@ -2,9 +2,9 @@ const express = require("express");
 
 const User = require("../models/User");
 const Purchase = require("../models/Purchase");
-const cloudinary = require('../utils/cloudinary');
-const upload = require('../utils/multer');
-const fs = require('fs');
+const cloudinary = require("../utils/cloudinary");
+const upload = require("../utils/multer");
+const fs = require("fs");
 
 function base64Encode(file) {
   var body = fs.readFileSync(file);
@@ -229,14 +229,14 @@ router.put("/free/:id", (req, res) => {
   );
 });
 
-
 // /api/users/sessions/id
-router.put("/sessions/:id", (req, res) => {
+router.get("/sessions/:id/:sessions", (req, res) => {
   const userId = req.params.id;
+  const sessions = req.params.sessions;
   User.findByIdAndUpdate(
     userId,
     {
-      $set: { sessions: req.body.sessions },
+      $set: { sessions },
     },
     (err, result) => {
       if (err) {
@@ -251,7 +251,6 @@ router.put("/sessions/:id", (req, res) => {
     }
   );
 });
-
 
 // /api/users/minutes/id
 router.put("/minutes/:id", (req, res) => {
@@ -275,7 +274,7 @@ router.put("/minutes/:id", (req, res) => {
   );
 });
 
-router.post("/profile/:id", upload.single('Image'), async (req, res, next) => {
+router.post("/profile/:id", upload.single("Image"), async (req, res, next) => {
   try {
     var base64String = base64Encode(req.file.path);
     const uploadString = "data:image/jpeg;base64," + base64String;
@@ -284,8 +283,8 @@ router.post("/profile/:id", upload.single('Image'), async (req, res, next) => {
       invalidate: true,
       crop: "fill",
     });
- var url =  uploadResponse.secure_url;
- console.log(url);
+    var url = uploadResponse.secure_url;
+    console.log(url);
   } catch (e) {
     console.log(e);
   }
@@ -332,8 +331,7 @@ router.put("/available/:id", (req, res) => {
 
 router.post("/admin/uid/", (req, res, next) => {
   const id = req.body.id;
-  User
-    .find({ _id: req.body.id })
+  User.find({ _id: req.body.id })
     .select()
     .exec()
     .then((data) => {
@@ -350,62 +348,58 @@ router.post("/admin/uid/", (req, res, next) => {
     });
 });
 
-router.post(
-  "/admin/update",
-  upload.single('Image'),
-  async (req, res, next) => {
-    try {
-      var base64String = base64Encode(req.file.path);
-      const uploadString = "data:image/jpeg;base64," + base64String;
-      const uploadResponse = await cloudinary.uploader.upload(uploadString, {
-        overwrite: true,
-        invalidate: true,
-        crop: "fill",
-      });
-   var url =  uploadResponse.secure_url;
-   console.log(url);
-    } catch (e) {
-      console.log(e);
-    }
-    User.find({_id: req.body.uid })
-      .exec()
-      .then((user) => {
-        if (user.length < 1) {
-          return res.status(409).json({
-            message: "User Not Exist",
-          });
-        } else {
-          User.update(
-            { _id: req.body.uid},
-            {
-              name: req.body.name,
-              mobile: req.body.mobile,
-              qualification: req.body.qualification,
-              profile: url,
-              age: req.body.age,
-              gender: req.body.gender,
-              location: req.body.location,
-              sessions: req.body.sessions,
-            }
-          )
-            .exec()
-            .then((result) => {
-              console.log(result);
-              res.status(201).json({
-                message: "User Updated",
-                user: result,
-              });
-            })
-            .catch((err) => {
-              console.log(err);
-              res.status(500).json({
-                error: err,
-              });
-            });
-        }
-      });
+router.post("/admin/update", upload.single("Image"), async (req, res, next) => {
+  try {
+    var base64String = base64Encode(req.file.path);
+    const uploadString = "data:image/jpeg;base64," + base64String;
+    const uploadResponse = await cloudinary.uploader.upload(uploadString, {
+      overwrite: true,
+      invalidate: true,
+      crop: "fill",
+    });
+    var url = uploadResponse.secure_url;
+    console.log(url);
+  } catch (e) {
+    console.log(e);
   }
-);
+  User.find({ _id: req.body.uid })
+    .exec()
+    .then((user) => {
+      if (user.length < 1) {
+        return res.status(409).json({
+          message: "User Not Exist",
+        });
+      } else {
+        User.update(
+          { _id: req.body.uid },
+          {
+            name: req.body.name,
+            mobile: req.body.mobile,
+            qualification: req.body.qualification,
+            profile: url,
+            age: req.body.age,
+            gender: req.body.gender,
+            location: req.body.location,
+            sessions: req.body.sessions,
+          }
+        )
+          .exec()
+          .then((result) => {
+            console.log(result);
+            res.status(201).json({
+              message: "User Updated",
+              user: result,
+            });
+          })
+          .catch((err) => {
+            console.log(err);
+            res.status(500).json({
+              error: err,
+            });
+          });
+      }
+    });
+});
 
 // router.post(
 //   "/admin/update/image",
@@ -463,11 +457,11 @@ router.post(
 //       });
 //   }
 // );
-router.post('/delete/admin', (req,res,next)=>{
+router.post("/delete/admin", (req, res, next) => {
   const id = req.body.id;
-  User.remove({_id:id})
-  .exec()
-  .then(data => res.status(200).json({message: "User deleted"}))
-  .catch(err => res.status(500).json(err));
+  User.remove({ _id: id })
+    .exec()
+    .then((data) => res.status(200).json({ message: "User deleted" }))
+    .catch((err) => res.status(500).json(err));
 });
 module.exports = router;
