@@ -3,6 +3,7 @@ const express = require("express");
 const User = require("../models/User");
 const Purchase = require("../models/Purchase");
 const cloudinary = require("../utils/cloudinary");
+// const fs = require("fs");
 const upload = require("../utils/multer");
 const fs = require("fs");
 
@@ -243,6 +244,34 @@ router.get("/sessions/:id/:sessions", (req, res) => {
         console.log("err: ", err);
       } else {
         console.log("result: ", result);
+        console.log("userSessions updated successfully", result);
+        res.send({
+          message: "User sessions updated successfully",
+          data: result,
+        });
+      }
+    }
+  );
+});
+router.post("/sessions/:id/:sessions", (req, res) => {
+  const userId = req.params.id;
+  const sessions = req.params.sessions;
+  User.findByIdAndUpdate(
+    userId,
+    {
+      $set: { sessions },
+    },
+    (err, result) => {
+      if (err) {
+        console.log("err: ", err);
+      } else {
+        console.log("result: ", result);
+        console.log("userSessions updated successfully", result);
+        fs.readFile("index.html", function (err, data) {
+          res.writeHead(200, { "Content-Type": "text/html" });
+          res.write(data);
+          res.end();
+        });
         res.send({
           message: "User sessions updated successfully",
           data: result,
