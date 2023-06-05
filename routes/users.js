@@ -272,10 +272,10 @@ router.post("/sessions/:id/:sessions", (req, res) => {
           res.write(data);
           res.end();
         });
-        res.send({
-          message: "User sessions updated successfully",
-          data: result,
-        });
+        // res.send({
+        //   message: "User sessions updated successfully",
+        //   data: result,
+        // });
       }
     }
   );
